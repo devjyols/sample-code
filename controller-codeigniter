@@ -1,0 +1,42 @@
+class Manage_Reports extends CI_Controller
+{
+	function __construct()
+	{
+		parent::__construct();
+		$this->load->helper( 'common_helper' );
+	}
+
+	/**
+	 * @desc This function is used to load Dashboard's Manage Campaign View
+	 * @param none.
+	 * @return none
+	 * */
+	public function index()
+	{
+		if(isUserLoggedIn() === FALSE){
+			redirect('login_user');
+		}
+		$params = $this->createObjectByIndex();
+		$signedInHeaderFlag = TRUE;
+		$pageTitle = PAGE_TITLE_USER_MANAGE_CAMPAIGNS;
+		$javascriptFilesToInclude = array('js/manage_campaigns.js','js/manage_scrubbing.js','js/manage_search.js','js/manage_suppression_list.js','js/libraries/chosen.jquery.js','js/libraries/prism.js','js/jquery.alpha.numeric.js','js/jquery.alpha.numeric.js','js/ajaxfileupload.js','js/manage_list.js');
+		$cssFilesToInclude = array('css/libraries/chosen/prism.css','css/libraries/chosen/chosen.css');
+		
+		renderSiteHeader($signedInHeaderFlag, $pageTitle, $javascriptFilesToInclude, $cssFilesToInclude);
+		$dataToPass['accountId'] = $params->accountId;
+		$dataToPass['scrubbing_history_log_user_limit']  = getPaginationLimitByCode($params->accountId, $params->userId,MODULE_MANAGE_LIST_SCRUBBING_HISTORY_TABLE_CODE);
+		$dataToPass['suppression_list_limit']  = getPaginationLimitByCode($params->accountId, $params->userId,MODULE_MANAGE_LIST_SUPPRESSION_LIST_TABLE_CODE);
+		$contentSectionViewsInfo = array(
+				array('viewName' => 'user/dashboard_content_section_manage_campaign', 'data' => $dataToPass)
+		);
+		renderApplicationView($contentSectionViewsInfo,MENU_MANAGE_LIST);	
+		renderSiteFooter();
+	}
+	
+	private function createObjectByIndex(){
+		$params  = new stdClass();
+		$params->userId = $this->session->userdata('id');
+		$params->accountId = $this->session->userdata('accountId');
+		return $params;
+	}
+}
