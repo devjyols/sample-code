@@ -1,0 +1,34 @@
+class Report_Manager
+{
+	var $codeignitorInstance;
+	function __construct()
+	{
+		$this->codeignitorInstance = & get_instance();
+		//$this->codeignitorInstance->load->Model('BroadCast');
+	}
+	
+	/**
+	 * @desc This function is used to get the all broadcast bt user campagin
+	 * @param $broadcastObj object of stdClass containing  Broadcast information.
+	 * */
+	public function getAllBroadcastsForUser(&$broadcastObj)
+	{
+		$modelsToLoad = array('User_Campaign_Broadcast');
+		loadModels($modelsToLoad);
+		$selectClause = '*';
+		$whereClause = array('campaign_id' =>$broadcastObj->campaignId);
+		if(array_key_exists('is_deleted', $broadcastObj) === TRUE){
+			$whereClause['is_deleted'] =  $broadcastObj->is_deleted;
+		}
+		$broadcasts = $this->codeignitorInstance->User_Campaign_Broadcast->getUserCampaignBR($selectClause, $whereClause);
+		foreach($broadcasts as &$broadcast){
+			$broadcast->attached_files = explode(',', $broadcast->attached_files);
+			$broadcast->included_suppression_list_ids = unserialize($broadcast->included_suppression_list_ids) === FALSE ? array() : unserialize($broadcast->included_suppression_list_ids);
+			$broadcast->included_campaign_ids = unserialize($broadcast->included_campaign_ids) === FALSE ? array() : unserialize($broadcast->included_campaign_ids);
+			$broadcast->excluded_campaign_ids = unserialize($broadcast->excluded_campaign_ids) === FALSE ? array() : unserialize($broadcast->excluded_campaign_ids);
+			$broadcast->included_filter_ids = unserialize($broadcast->included_filter_ids) === FALSE ? array() : unserialize($broadcast->included_filter_ids);
+			$broadcast->excluded_filter_ids = unserialize($broadcast->excluded_filter_ids) === FALSE ? array() : unserialize($broadcast->excluded_filter_ids);
+		}
+		return $broadcasts;
+	}
+}	
