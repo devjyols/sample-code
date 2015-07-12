@@ -1,0 +1,48 @@
+ Created By : Jyolsna Pillai 
+ * Created Date : 2012-05-07 * Modified Date : 2013-05-07 * 
+ * Purpose : To authenticate user. 
+ **********************************/ 
+ DELIMITER $$ 
+ DROP PROCEDURE IF EXISTS `offers`.`pd_doAuthenticateuser` 
+ $$ CREATE PROCEDURE `offers`.`pd_doAuthenticateuser`( _PuserID VARCHAR(55),OUT affectedRows INT) 
+ BEGIN update usermaildata set Authenticated =1 where UserID =_PuserID and Authenticated != 1; 
+ SET affectedRows = row_count(); IF affectedRows >0 THEN call pd_approvedSignUpBonus(_PuserID); 
+ END IF; 
+ END $$ 
+ DELIMITER ;
+ 
+ 
+ 
+ ===================================================================================================================
+ * 
+ Created By : Jyolsna Pillai 
+ * Created Date : 2009-05-22 * Modified Date : 2013-05-22 * 
+ * Purpose : To access user account only on authentication 
+ **********************************/ 
+ DELIMITER $$ 
+ DROP PROCEDURE IF EXISTS `offers`.`pd_approvedSignUpBonus` 
+ $$ CREATE PROCEDURE `offers`.`pd_approvedSignUpBonus`( _UserID VARCHAR(55)) 
+ BEGIN DECLARE Auth INT DEFAULT 0; 
+ select count(u.userid) INTO Auth from user u, usermaildata ud 
+ where u.userid = ud.userid and u.userid = _UserID and ud.Authenticated=1; 
+ IF Auth = 1 THEN UPDATE `usersurvey` SET `Status`='Approved',`VerifyDate`=now() 
+ WHERE `UserID`=_UserID and `SurveyID`=3; 
+ END IF; 
+ END $$ 
+ DELIMITER ; 
+ 
+ ====================================================================================================================
+ 
+ * Created By : Jyolsna Pillai
+ * Created Date : 2014-05-13 
+ * Modified Date : 2014-05-13 
+ * Purpose : To get All Affiliate List From affiliate table to show report to admin. 
+ **********************************/ 
+ DELIMITER $$ 
+ DROP PROCEDURE IF EXISTS offers.pd_getOfferList 
+ $$ CREATE PROCEDURE offers.`pd_getOfferList`() 
+ BEGIN select a.AffiliateID as 'AffiliateID', a.AffiliateName as 'AffiliateName', a.LoginName as 'LoginName', a.LoginPassword as 'LoginPassword', a.ContactName as 'ContactName', a.ContactEmail as 'ContactEmail'
+ from affiliate a left join affiliatepixeladjustmentinfo apd on (a.AffiliateID=apd.AffiliateID and apd.SubAffiliateId='') 
+ order by Live desc; 
+ END $$ 
+ DELIMITER ; 
