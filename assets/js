@@ -1,0 +1,265 @@
+showLoadingDivInFullBrowserSpace();
+var gChartObj;
+var gChartCols = [];
+var gChartSeries = {};
+var gChartData = {};
+var gChartOptions = {};
+var gChartImageSrcURI ;
+$(document).ready(manageReportReadyHandler);
+initGoogleChartsForReports();
+function manageReportReadyHandler() {
+	managereportInitializeDOMElements();
+	initBroadcastReports();
+	bindHandlerOnElements('#broadcastsTabHyperLink', 'click', getCampaignBrMessagesHandler);
+	bindHandlerOnElements('#autorespondersTabHyperLink', 'click', getCampaignArMessagesHandler);
+	bindHandlerOnElements('#deliveryTrackerTabHyperLink', 'click', getCampaignDeliveryTrackingHandler);
+	bindHandlerOnElements('#allBroadcasts', 'change', allBroadcastsClickHandler); 
+	bindHandlerOnElements('#allAutoresponders', 'change', allAutorespondersClickHandler); 
+	bindHandlerOnElements('#viewResultsButton', 'click', getBrDetailstatsClickHandler); 
+	bindHandlerOnElements('#viewArResultsButton', 'click', getArDetailstatsClickHandler);
+	bindHandlerOnElements('#viewDeliveryTrackingResultsButton', 'click', getDeliveryTrackingDetailstatsClickHandler);
+	bindHandlerOnElements('.contextMenuLinks', 'click', contextMenuLinksClickHandler);
+	bindHandlerOnElements('.viewContactDetailsByType', 'click', viewContactDetailsByTypeClickHandler);
+	bindHandlerOnElements('#printPdfReportButton', 'click', printPdfReportButtonClickHandler);
+	bindHandlerOnElements('#downloadPdfReportButton', 'click', downloadPdfReportButtonClickHandler);
+	bindHandlerOnElements('#copyToAccountDropdown', 'change', copyToAccountDropdownChangeHandler);
+	
+	initProgressBarsForReports();
+	initGoogleChartsForReports();
+	reportFormValidationRules();
+	hideLoadingDivInFullBrowserSpace();
+}
+
+function initBroadcastReports(){
+	getCampaignBrMessages(formatDateForServerCallForId('#brStartDate'),formatDateForServerCallForId('#brEndDate')); // this is for all broadcasts for last 10 days
+	$("#allBroadcasts").prop( "checked" ); 
+	$(".chzn-select").chosen({no_results_text: "Oops, nothing found!"});
+	$('.chosen-container').css({'width': '350px'});
+}
+function initGoogleChartsForReports(){
+	google.load("visualization", "1", {packages:["corechart"]});
+	
+}
+function initProgressBarsForReports(){
+	$('#openProgressbar,#clickProgressbar,#openArProgressbar,#clickArProgressbar').progressbar({value : 0});
+}
+function getBroadcastDetailStats(dataToPost){
+	$.ajax({
+		url : "user/manage_report/getBroadcastDetailStatsForReports",
+		type : "POST",
+		data : dataToPost,
+		dataType : 'html',
+		cache: false,
+		success : function(response) {
+		getBrEmailsSentLineGraph(response);
+			hideLoadingDivInFullBrowserSpace();
+		},
+		beforeSend: function(){
+			showLoadingDivInFullBrowserSpace();
+			
+		},
+		error : function() {
+			hideLoadingDivInFullBrowserSpace();
+		}
+	});
+	
+}
+function getBrEmailsSentLineGraph(response){
+	drawChart(response,'chart_div');
+}
+
+function drawChart(response,div) {
+var response = $.parseJSON(response) ; //to convert to parsed object
+//	alert(JSON.stringify(response));
+var dataToPlot = [['Date', 'Delivered', 'Opens', 'Clicks', 'Unsubscribes', 'Bounces', 'Complaints']];
+var title = 'Total Sent: ' ;
+var totalSent = 0 ;
+var rowIndex = 1;
+//alert($.isEmptyObject(response.statDetails));
+if($.isEmptyObject(response.statDetails))
+{
+	dataToPlot [1]= ['',0,0,0,0,0,0]; 
+}
+else
+{
+	$.each(response.statDetails, function(index, value) {
+		var rowArray = [];
+		//if (rowArray instanceof Array) alert(rowArray);
+		rowArray.push(index) ;
+		rowArray.push(parseInt(value.deliveredTotal)) ;
+		rowArray.push(parseInt(value.openedTotal)) ;
+		rowArray.push(parseInt(value.clickedTotal)) ;
+		rowArray.push(parseInt(value.unsubscribedTotal)) ;
+		rowArray.push(parseInt(value.bouncedTotal)) ;
+		rowArray.push(parseInt(value.complaintTotal)) ;
+	
+		totalSent +=  parseInt(value.sentTotal) ;
+		
+		dataToPlot [rowIndex]= rowArray;
+		++rowIndex;
+	//		alert(JSON.stringify(dataToPlot));
+	});
+}	
+	title += totalSent ;
+	//	data.addRows(rowArray);
+	
+	/*
+	 * Set google chart options
+	 */
+gChartOptions = {'title': null,
+			'vAxis': {title: "Volume" , minValue : -1, baselineColor : '#CCCCCC', titleTextStyle:{italic: false, bold:false}},
+	         'hAxis': {title: "Date" , titleTextStyle:{italic: false, bold:false} },		          
+           'width':1147,
+           'height':395,
+           'fontSize' : 12 ,
+           'pointShape': 'circle',
+           'dataOpacity' : 0.65 ,
+           'pointSize': 3,
+           'legend': { position: 'top', alignment:'end'},
+            'lineWidth': 1.2,
+            'chartArea': {'width': '90%', 'height': '80%'},
+           'colors': [ '#0E63A4','#4FA750', '#678678','#FE0000','#66007F','FF6800','#333333']
+//               Width:1095 / Height: 276
+};
+
+// Instantiate and draw our chart, with the options.
+	gChartObj = drawLineChart(div, dataToPlot, gChartOptions);
+	/**
+	 * disable all data after the first three legends
+	 */
+    for(var n = 4 ; n < gChartData.getNumberOfColumns(); n++ ){
+    	gChartCols[n] = {
+            label: gChartData.getColumnLabel(n),
+            type: gChartData.getColumnType(n),
+            calc: function () {
+                return null;
+            }
+        };
+        // grey out the legend entry
+    	gChartSeries[n - 1].color = '#CCCCCC';
+    	var view = new google.visualization.DataView(gChartData);
+        view.setColumns(gChartCols);
+        gChartObj.draw(view, gChartOptions);
+	}
+
+	google.visualization.events.addListener(gChartObj, 'select', reportChartSelectHandler);
+	
+	var divTitleId = "#" + div + "_title_text" ;
+	$(divTitleId).text(totalSent); // chart_div_title_text
+
+}
+/**
+ * adding google charts functionality from broadcasts
+ */
+function drawLineChart(domElementID, dataToPlot, graphOptions) {
+//	if (dataToPlot instanceof Array) alert(dataToPlot);
+	gChartData = google.visualization.arrayToDataTable(dataToPlot);  
+    gChartCols = [];
+    gChartSeries = {};
+    for (var i = 0; i < gChartData.getNumberOfColumns(); i++){
+    	gChartCols.push(i);
+	    if (i > 0) {
+	    	gChartSeries[i - 1] = {};
+
+	    }
+	}
+    graphOptions.series = gChartSeries;
+	chart = new google.visualization.LineChart(document.getElementById(domElementID));
+	chart.draw(gChartData, graphOptions);
+//	alert(chart.getImageURI());
+	gChartImageSrcURI = chart.getImageURI() ;
+	return chart;
+}
+
+function reportChartSelectHandler(event){
+	if(gChartObj == undefined){
+		return;
+	}
+	var selection = gChartObj.getSelection();
+	if (selection.length > 0) {
+        // if row is undefined, we clicked on the legend
+        if (selection[0].row === null) {
+            var col = selection[0].column;
+            if (gChartCols[col] == col) {
+                // hide the data series
+            	gChartCols[col] = {
+                    label: gChartData.getColumnLabel(col),
+                    type: gChartData.getColumnType(col),
+                    calc: function () {
+                        return null;
+                    }
+                };
+//            	alert(gChartCols.toSource());
+                // grey out the legend entry
+            	gChartSeries[col - 1].color = '#CCCCCC';
+            }
+            else {
+                // show the data series
+            	gChartCols[col] = col;
+            	gChartSeries[col - 1].color = null;
+            }
+            var view = new google.visualization.DataView(gChartData);
+            view.setColumns(gChartCols);
+            gChartObj.draw(view, gChartOptions);
+        }
+    }
+}
+function contextMenuLinksClickHandler(event){
+	var clickedID = $(this).attr('id');
+//	alert(clickedID);
+	statustype = "" ;
+	switch(clickedID){
+	case "deliveredBroadcastsDownloadLink":
+		statustype = "delivered";
+		break;
+	case "openedBroadcastsDownloadLink":
+		statustype = "opened";
+		break;
+	case "clickedBroadcastsDownloadLink":
+		statustype = "clicked";
+		break;
+	case "unsubscribedBroadcastsDownloadLink":
+		statustype = "un_subscribed";
+		break;
+	case "bouncedBroadcastsDownloadLink":
+		statustype = "bounced";
+		break;
+	case "complaintBroadcastsDownloadLink":
+		statustype = "complaint";
+		break;
+	}		
+	event.preventDefault();
+	var downloadSelector = "#" + clickedID;
+
+	initLeftContextMenuForDownloads(downloadSelector);
+}
+function initContextMenu(downloadSelector){
+	context.init({
+	    fadeSpeed: 100,
+	    above: 'auto',
+	    preventDoubleContext: true,
+	    compress: true
+	});
+	var menuObjects = [{text: 'PDF', 
+		href: "pdf" ,
+		action: function(e){
+			e.preventDefault();
+			downloadClickHandler(e);	
+			}
+	    },{
+		text: 'XLS',
+		href: "excel" ,
+		action: function(e){
+			e.preventDefault();
+			downloadClickHandler(e);	
+			}
+	},{
+		text: 'CSV', 
+		href: "csv" ,
+		action: function(e){
+			e.preventDefault();
+			downloadClickHandler(e);	
+			}
+	}];
+	context.attach(downloadSelector, menuObjects);
+}
