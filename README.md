@@ -1,2 +1,6 @@
 # sample-code
-Code samples to display development and programming skills 
+Code samples 
+PHP 
+MVC framework - moved, view, controller code
+3-tier system with business logic - business manager code
+Database - sql queries , procedures
