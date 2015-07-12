@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+	<title>Adopia</title>
+	<meta name="description" content=""/>
+	<meta name="keywords" content=""/>
+    <link rel="stylesheet" type="text/css" href="css/style.css" media="screen" />
+</head>
+<body>
+
+
+<!--Content Right Start-->
+<div class="cont_rt">
+	<!--HD Start-->
+	<div class="hd">
+		<div class="hd_lt">Reports</div>
+	</div>
+	<div class="clr"></div>
+	<!--HD End-->
+	<!--Tabs Start-->
+	<div id="overviewTabs" class="silver_tabs">
+		<ul>
+			<li><a id="broadcastsTabHyperLink"
+				href="<?php echo base_url()?>user/manage_report/#broadcastsTab">Broadcasts</a>
+			</li>
+			<li><a id="autorespondersTabHyperLink"
+				href="<?php echo base_url()?>user/manage_report/#autorespondersTab">Autoresponders</a>
+			</li>
+			<li><a id="deliveryTrackerTabHyperLink"
+				href="<?php echo base_url()?>user/manage_report/#delTrackTab">Delivery&nbsp;Tracker</a>
+			</li>
+		</ul>
+		<!--Tabs End-->
+		<!--Content Right Inner Start-->
+		<div id="broadcastsTab" class="cont_rt_in">
+			<!--HD Start-->
+			<div class="hd01">
+				<span class="fl alt">Broadcast Statistics</span><span class="fr"><!-- <a
+					href="JavaScript:;" id="printerFriendlyReportLink"
+					class="fnt12 dgry">Printer Friendly Report</a> --> <a
+					href="JavaScript:;" id="printerFriendlyReportLink"
+					class="fnt12 dgry" style="visibility:hidden">Printer Friendly Report</a> 
+					<!-- debugging <button type="submit" class="btn_gry03" id="emailReportButton" >Send</button> -->
+					</span>
+			</div>
+			<!--HD End-->
+			<div class="wd100" style="margin-top: 15px;">
+				<span class="fl" style="margin: 3px 0 0 0px;">Date Range:</span> <span
+					class="fl cust_fld" style="margin-left: 10px;"><input type="text"
+					class="wd05" id="brStartDate" style="height:25px" /></span> <span class="fl"
+					style="margin: 3px 0 0 10px;">to</span> <span class="fl cust_fld"
+					style="margin-left: 10px;"><input type="text" class="wd05"
+					id="brEndDate" style="height:25px"/></span>
+					<div class="fr">
+						<button type="button" id="br_reports_action_menu" class="btn_gry_action_button">Actions&nbsp;&#x25BC;</button>
+					</div>
+			</div>
+			<div class="wd100" style="margin-top: 15px;">
+				<span class="fl" style="margin: 5px 0 0 0px;">Select Broadcast:</span>
+				<span class="fl broadcat_reporting_chosen" style="margin-left: 10px;">
+				<select style="margin: 3px 0 0 10px;" id="broadcastNames" class="chzn-select fl fnt12" multiple disabled >
+						<option value='-1'>--No Broadcast Available --</option>
+				</select></span> <span class="fl" style="margin: 3px 0 0 5px;"><label class="option option-black">
+				<input type="checkbox" id="allBroadcasts" checked /><span class="checkbox"></span>&nbsp;View All
+					Broadcasts </label></span>
+				<button type="submit" class="fl btn_dgry_grd02"
+					style="margin-left: 10px; margin-top: 3px; height:25px;" id="viewResultsButton">View Results</button>
+			</div>
+			<div class="bx_reports">
+				<div class="bx_reports_one">
+					<div class="bx_reports_one_arw"></div>
+					<div class="bx_reports_one_on">
+						<img src="images/icn_reports_01.png" />
+					</div>
+					<div class="bx_reports_one_tw">Emails Sent</div>
+					<div class="bx_reports_one_th" id='emailsSentBroadcasts'>0</div>
+				</div>
+				<div class="bx_reports_two" style="margin-left: 15px;">
+					<div class="bx_reports_two_on">
+						<img src="images/icn_reports_02.png" />
+					</div>
+					<div class="bx_reports_two_tw">Delivered</div>
+					<div class="bx_reports_two_th" id='emailsDeliveredBroadcasts'>0</div>
+					<!-- 
+					<div class="bx_reports_two_fr" style="display:none" >
+						<a href="JavaScript:;" id="deliveredBroadcastsViewLink"
+							class="viewContactDetailsByType">View</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a
+							href="Javascript:;" id="deliveredBroadcastsDownloadLink"
+							class="contextMenuLinks">Download</a>
+					</div>
+					-->
+				</div>
+				<div class="bx_reports_two">
+					<div class="bx_reports_two_on">
+						<img src="images/icn_reports_03.png" />
+					</div>
+					<div class="bx_reports_two_tw">Opens</div>
+					<div class="bx_reports_two_th" id='emailsOpenedBroadcasts'>0</div>
+					<!-- 
+					<div class="bx_reports_two_fr" style="display:none">
+						<a href="JavaScript:;" id="openedBroadcastsViewLink"
+							class="viewContactDetailsByType">View</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a
+							href="Javascript:;" id="openedBroadcastsDownloadLink"
+							class="contextMenuLinks">Download</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a
+							href="#">Copy</a>
+					</div>
+					-->
+				</div>
+				<div class="bx_reports_two">
+					<div class="bx_reports_two_on">
+						<img src="images/icn_reports_04.png" />
+					</div>
+					<div class="bx_reports_two_tw">Clicks</div>
+					<div class="bx_reports_two_th" id='emailsClickedBroadcasts'>0</div>
+					<!-- 
+					<div class="bx_reports_two_fr" style="display:none" >
+						<a href="JavaScript:;" id="clickedBroadcastsViewLink"
+							class="viewContactDetailsByType">View</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a
+							href="Javascript:;" id="clickedBroadcastsDownloadLink"
+							class="contextMenuLinks">Download</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a
+							href="#">Copy</a>
+					</div>
+					 -->
+				</div>
+				<div class="bx_reports_two">
+					<div class="bx_reports_two_on">
+						<img src="images/icn_reports_05.png" />
+					</div>
+					<div class="bx_reports_two_tw">Unsubscribes</div>
+					<div class="bx_reports_two_th" id='emailsUnsubscribedBroadcasts'>0</div>
+					<!-- 
+					<div class="bx_reports_two_fr" style="display:none" >
+						<a href="JavaScript:;" id="unsubscribedBroadcastsViewLink"
+							class="viewContactDetailsByType">View</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a
+							href="Javascript:;" id="unsubscribedBroadcastsDownloadLink"
+							class="contextMenuLinks">Download</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a
+							href="#">Copy</a>
+					</div>
+					 -->
+				</div>
+				<div class="bx_reports_two">
+					<div class="bx_reports_two_on">
+						<img src="images/icn_reports_06.png" />
+					</div>
+					<div class="bx_reports_two_tw">Bounces</div>
+					<div class="bx_reports_two_th" id='emailsBouncedBroadcasts'>0</div>
+					<!-- 
+					<div class="bx_reports_two_fr" style="display:none">
+						<a href="JavaScript:;" id="bouncedBroadcastsViewLink"
+							class="viewContactDetailsByType">View</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a
+							href="Javascript:;" id="bouncedBroadcastsDownloadLink"
+							class="contextMenuLinks">Download</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a
+							href="#">Copy</a>
+					</div>
+					-->
+				</div>
+				<div class="bx_reports_two">
+					<div class="bx_reports_two_on">
+						<img src="images/icn_reports_07.png" />
+					</div>
+					<div class="bx_reports_two_tw">Complaints</div>
+					<div class="bx_reports_two_th" id='emailsComplaintBroadcasts'>0</div>
+					<!--  
+					<div class="bx_reports_two_fr">
+						<a href="JavaScript:;" id="complaintBroadcastsViewLink"
+							class="viewContactDetailsByType">View</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a
+							href="Javascript:;" id="complaintBroadcastsDownloadLink"
+							class="contextMenuLinks">Download</a>
+					</div>
+					-->
+				</div>
+				<!-- modal window comes here -->
+
+				<!-- modal window with pagination ends -->
+			</div>
+			<div class="clr"></div>
+			<!-- progress bar -->
+			<div class="wd100" style="margin-top: 20px;"
+				id="brProgressBarDisplay">
+				<div class="fl" style="width: 491px; margin-left: 10px;">
+					<div class="wd100 fnt16">
+						<span class="fl">Open Rate</span><span class="fr lblu b"
+							id="openProgressbarValue">0%</span>
+					</div>
+					<div class="wd100 progress_bar" style="margin-top: 20px;"
+						id="openProgressbar"></div>
+				</div>
+				<div class="fl" style="width: 491px; margin-left: 100px;">
+					<div class="wd100 fnt16">
+						<span class="fl">Click Rate</span><span class="fr lblu b"
+							id="clickProgressbarValue">0%</span>
+					</div>
+					<div class="wd100 progress_bar" style="margin-top: 20px;"
+						id="clickProgressbar"></div>
+				</div>
+			</div>
+			<div class="bx_gry05" style="margin-top: 30px;margin-bottom:30px;">
+				<div class="bx_gry05_in">Emails Sent</div>
+			</div>
+			<!--Div that will hold the line chart-->
+			<div id="brChartTitle" style="margin-left:27px ; margin-top : 170px;">Total Sent : <span id="chart_div_title_text" style="font-weight: bold">0</span></div>
+			<div id="chart_div"
+				style='float: left; width: 400; height: 300; margin: 0 auto'>
+			</div>
+			<!--Div that will hold br download contacts -->
+			<div>
+				<table id="viewBrReportDetailsDownload" class="multi_color_table_row"
+					style="visibility: hidden">
+					<thead>
+						<tr>
+							<th>Email</th>
+							<th>Domain</th>
+							<th>First Name</th>
+							<th>Last Name</th>
+							<th>Status</th>
+						</tr>
+					</thead>
+					<tbody>
+					<td>No contacts found</td>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<!-- end of broadcastsTab -->
+		<!-- start of autorespondersTab -->
+		<div id="autorespondersTab" class="cont_rt_in">
+			<!--Content Right Inner Start-->
+				<!--HD Start-->
+				<div class="hd01">
+					<span class="fl alt">Autoresponder Statistics</span><span
+						class="fr"><a href="#" class="fnt12 dgry" style="display:none">Printer Friendly Report</a>
+					</span>
+						
+				</div>
+				<!--HD End-->
+				<div class="wd100" style="margin-top: 15px;">
+					<span class="fl" style="margin: 3px 0 0 0px;">Date Range:</span> <span
+						class="fl cust_fld" style="margin-left: 10px;"><input type="text"
+						class="wd05" id="arStartDate" style="height:25px" /></span> <span class="fl"
+						style="margin: 3px 0 0 10px;">to</span> <span class="fl cust_fld"
+						style="margin-left: 10px;"><input type="text" class="wd05"
+						id="arEndDate" style="height:25px" /></span>
+						<div class="fr">
+							<button type="button" id="ar_reports_action_menu" class="btn_gry_action_button">Actions&nbsp;&#x25BC;</button>
+						</div>
+				</div>
+				<div class="wd100" style="margin-top: 15px;">
+					<span class="fl" style="margin: 3px 0 0 0px;">Select Autoresponder:</span>
+					<span class="fl broadcat_reporting_chosen" style="margin-left: 10px;"> <select
+						style="margin: 5px 0 0 10px;" id="autoresponderNames"
+						class="chzn-select fl fnt12" multiple disabled >
+							<option>-- Auto Responder Name --</option>
+					</select>
+					</span> 
+					<span class="fl" style="margin: 3px 0 0 5px;"><label class="option option-black">
+					<input type="checkbox" id="allAutoresponders" checked />
+						<span class="checkbox"></span>&nbsp;View All Autoresponders </label>
+					</span>
+					<button type="submit" class="fl btn_dgry_grd02"
+						style="margin-left: 10px; margin-top: 3px; height:25px " id="viewArResultsButton">View Results</button>
+				</div>
+				<div class="bx_reports">
+					<div class="bx_reports_one">
+						<div class="bx_reports_one_arw"></div>
+						<div class="bx_reports_one_on">
+							<img src="images/icn_reports_01.png" />
+						</div>
+						<div class="bx_reports_one_tw">Emails Sent</div>
+						<div class="bx_reports_one_th" id="emailsSentAutoresponders">0</div>
+					</div>
+					<div class="bx_reports_two" style="margin-left: 15px;">
+						<div class="bx_reports_two_on">
+							<img src="images/icn_reports_02.png" />
+						</div>
+						<div class="bx_reports_two_tw">Delivered</div>
+						<div class="bx_reports_two_th" id="emailsDeliveredAutoresponders">0</div>
+					</div>
+					<div class="bx_reports_two">
+						<div class="bx_reports_two_on">
+							<img src="images/icn_reports_03.png" />
+						</div>
+						<div class="bx_reports_two_tw">Opens</div>
+						<div class="bx_reports_two_th" id="emailsOpenedAutoresponders">0</div>
+
+					</div>
+					<div class="bx_reports_two">
+						<div class="bx_reports_two_on">
+							<img src="images/icn_reports_04.png" />
+						</div>
+						<div class="bx_reports_two_tw">Clicks</div>
+						<div class="bx_reports_two_th" id="emailsClickedAutoresponders">0</div>
+
+					</div>
+					<div class="bx_reports_two">
+						<div class="bx_reports_two_on">
+							<img src="images/icn_reports_05.png" />
+						</div>
+						<div class="bx_reports_two_tw">Unsubscribes</div>
+						<div class="bx_reports_two_th" id="emailsUnsubscribedAutoresponders">0</div>
+					</div>
+					<div class="bx_reports_two">
+						<div class="bx_reports_two_on">
+							<img src="images/icn_reports_06.png" />
+						</div>
+						<div class="bx_reports_two_tw">Bounces</div>
+						<div class="bx_reports_two_th" id="emailsBouncedAutoresponders">0</div>
+					</div>
+					<div class="bx_reports_two">
+						<div class="bx_reports_two_on">
+							<img src="images/icn_reports_07.png" />
+						</div>
+						<div class="bx_reports_two_tw">Complaints</div>
+						<div class="bx_reports_two_th" id="emailsComplaintAutoresponders">0</div>
+					</div>
+				</div>
+				<!-- progress bar -->
+				<div class="wd100" style="margin-top: 20px;">
+					<div class="fl" style="width: 491px; margin-left: 10px;">
+						<div class="wd100 fnt16">
+							<span class="fl">Open Rate</span><span class="fr lblu b"
+								id="openArProgressbarValue">0%</span>
+						</div>
+						<div class="wd100 progress_bar" style="margin-top: 20px;"
+							id="openArProgressbar"></div>
+					</div>
+					<div class="fl" style="width: 491px; margin-left: 100px;">
+						<div class="wd100 fnt16">
+							<span class="fl">Click Rate</span><span class="fr lblu b"
+								id="clickArProgressbarValue">0%</span>
+						</div>
+						<div class="wd100 progress_bar" style="margin-top: 20px;"
+							id="clickArProgressbar"></div>
+					</div>
+				</div>
+				<div class="clr"></div>
+				<div class="bx_gry05" style="margin-top: 30px;margin-bottom:30px">
+					<div class="bx_gry05_in">Emails Sent</div>
+				</div>
+				<!--Div that will hold the line chart-->
+				<div id="arChartTitle" style="margin-left:27px ;">Total Sent : <span id="ar_chart_div_title_text" style="font-weight: bold">0</span></div>
+				<div id="ar_chart_div" style='float: left; width: 400; height: 300'></div>
+				<!--Div that will hold ar download contacts -->
+				<div>
+					<table id="viewArReportDetailsDownload" class="multi_color_table_row"
+						style="visibility: hidden">
+						<thead>
+							<tr>
+								<th>Email</th>
+								<th>Domain</th>
+								<th>First Name</th>
+								<th>Last Name</th>
+								<th>Status</th>
+							</tr>
+						</thead>
+						<tbody></tbody>
+					</table>
+				</div>
+			</div>
+			<!--Content Right Inner End-->
+		<!-- end of autorespondersTab -->
+		<!-- start of delivery tracker Tab -->
+		<div id="delTrackTab" class="cont_rt_in">
+			<!--Content Right Inner Start-->
+				<!--HD Start-->
+				<div class="hd01">
+					<span class="fl alt">Delivery Tracker</span>
+				</div>
+				<!--HD End-->
+				<div class="wd100" style="margin-top: 15px;">
+					<span class="fl" style="margin: 3px 0 0 0px;">Date Range:</span> <span
+						class="fl cust_fld" style="margin-left: 10px;"><input type="text"
+						class="wd05" id="trackerStartDate" style="height:25px" /></span> <span class="fl"
+						style="margin: 3px 0 0 10px;">to</span> <span class="fl cust_fld"
+						style="margin-left: 10px;"><input type="text" class="wd05"
+						id="trackerEndDate" style="height:25px" /></span> <select class="fl fnt12"
+						style="margin: 0 0 0 10px; height:25px;" id="deliveryTrackerSearchColumn">
+						<option value='all'>All Columns</option>
+						<option value='creation_date'>Date</option>
+						<option value='subject'>Broadcast Name</option>
+						<!-- <option value='.td_3'>Inbox</option>
+						<option value='.td_4'>Bulk</option>
+						<option value='.td_5'>Missing</option> -->
+					</select> <span class="fl cust_fld" style="margin-left: 10px;"><input
+						type="text" value="" class="wd01" id="deliveryTrackerSearchTerm" style="margin: 0 0 0 10px; height:23px;" /></span>
+					<button type="submit" class="fl btn_dgry_grd02"
+						style="margin-left: 20px;height:23px" id="viewDeliveryTrackingResultsButton" >Update</button>
+				</div>
+				<!--Table01 Start-->
+				<div class="table01" id="deliveryReportTable">
+					<!-- to be modified to report_br_delivery_tracker_table-->
+					<table id="brDeliveryStatstable" current_offset="0"
+						user_defined_limit="<?php echo $report_br_delivery_tracker_table;?>"
+						table_code="<?php echo REPORT_BR_DELIVERY_TRACKER_TABLE_CODE;?>"
+						type="">
+						<thead>
+							<tr>
+								<th>&nbsp;</th>
+								<th style="text-align: left"><p>Date</p></th>
+								<th style="text-align: left"><p>Broadcast Name</p></th>
+								<th class="ac"><p>Inbox</p></th>
+								<th class="ac"><p>Bulk</p></th>
+								<th class="ac"><p>Missing</p></th>
+								<th class="ac"><p>Indepth Statistics</p></th>
+								<th>&nbsp;</th>
+							</tr>
+						</thead>
+						<tbody></tbody>
+					</table>
+				</div>
+				<!--Table01 End-->
+				<div id="brDeliveryPaginationAndViewRecordsContainer" class="pgn01">
+					<div class="pgn01_lt" style="padding-left: 20px">
+						<span>View Records:</span> <span><a
+							class="br_delivery_report_view_records_class"
+							href="JavaScript:;" limit="10">10</a><span class="b u"
+							style="display: none;">10</span> </span> <span><a
+							class="br_delivery_report_view_records_class"
+							href="JavaScript:;" limit="20">20</a><span class="b u"
+							style="display: none;">20</span> </span> <span><a
+							class="br_delivery_report_view_records_class"
+							href="JavaScript:;" limit="30">30</a><span class="b u"
+							style="display: none;">30</span> </span>
+					</div>
+					<div class="pgn01_rt" id="brDeliveryReportPaginationContainer"></div>
+				</div>
+				<div id="viewContactDetailsDialog">
+					<div>
+						<br> <br>
+					</div>
+					<div style="height: 450px; overflow: auto; border: 2 px solid #F00">
+						<table id="viewReportDetails" current_offset="0"
+							class="multi_color_table_row" user_defined_limit="10"
+							viewReportDetailsBroadcastIds="0" viewReportDetailsAutoresponderIds="0" width="100%" cellpadding="0"
+							cellspacing="0" border="0">
+							<thead>
+								<tr>
+									<th class="table01_lft_nobor td_1"><p>Email</p></th>
+									<th class="table01_lft_nobor td_2"><p>Domain</p></th>
+									<th class="table01_lft_nobor td_3"><p>First Name</p></th>
+									<th class="table01_lft_nobor td_4"><p>Last Name</p></th>
+									<th class="table01_lft_nobor td_5"><p>Status</p></th>
+								</tr>
+							</thead>
+							<tbody></tbody>
+						</table>
+						<div id="viewReportsDetailLimitContainer" class="pgn01">
+							<div class="pgn01_rt" style="padding-right: 20px"
+								id="viewReportsContactDetailPaginationContainer"></div>
+						</div>
+					</div>
+				</div>
+				<div id="copyContactDetailsDialog">
+					<form method="post" action="" id="copyContactsForm">
+						<div class="form-body" style="padding:20px;">					
+							<div class="wd100">
+								<table width="100%" cellspacing="0" cellpadding="0" border="0" class="fnt14 b">
+									<tr>
+										<td width="120">Copy to Account:</td>
+										<td width="20">&nbsp;
+										<input type="hidden" value"" id="statusType" />
+										<input type="hidden" value"" id="messageType" />
+										</td>
+										<td>
+											<div style="width:200px;">
+												<label for="copyToAccountDropdown" class="field select">
+													<select id="copyToAccountDropdown" name="copyToAccountDropdown">
+														<option value="">Account Name</option>
+													</select>
+													<i class="arrow double"></i>
+												</label>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<td colspan="3">&nbsp;</td>
+									</tr>
+									<tr>
+										<td>Copy to List:</td>
+										<td>&nbsp;</td>
+										<td>
+											<div style="width:200px;">
+												<label for="copyToListDropdown" class="field select">
+													<select id="copyToListDropdown" name="copyToListDropdown">
+														<option value="">List Name</option>
+													</select>
+													<i class="arrow double"></i>
+												</label>
+											</div>
+										</td>
+									</tr>
+								</table>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+			<!--Content Right Inner End-->
+		<!-- end of delTrackTab -->
+		<!-- printer friendly report begins -->
+			<div id="shareReportDialog" style="display: none;">
+				<div class="popup_bx01 fnt14" style="padding-bottom: 0;">
+					<div class="popup_bx01_in" style="width: 100%; margin: 0; height:100%">
+						<!--Box Print Start-->
+						<div class="bx_print">
+							<div class="bx_print_lt" id='printtoPDFWindow' >
+								<iframe id="preview" name="preview" src="" border="0" frameborder="0" marginheight="0" marginwidth="0" height="650px" width="100%"></iframe>
+								<div class="bx_print_lt_in" id="partHtmlForReportPDF"
+									style="visibility: hidden">
+									<span id="broadcastNamesToPrint"></span><span id="autoresponderNamesToPrint"></span>
+								</div>
+							</div>
+							<div class="bx_print_rt">
+								<div class="bx_print_rt_in">
+								
+								<!-- form to email pdf report -->
+								<form id="emailReportForm">
+									<div id="emailDocumentStatus">
+									<div class="wd100">
+										<p class="fnt13 b" style="margin: 0;" >Email Document</p>
+										<p class="fnt12" style="margin: 5px 0 0 0;">Enter recipient(s)
+											below.</p>
+									</div>
+									<div class="wd100" style="margin-top: 9px;">
+										<div class="bx_print_fld" >
+											<textarea id="emailReportRecipientsTxtField"  name="emailReportRecipientsTxtField" class="gui-input required" max_emails_count="5" ></textarea>
+										</div>
+									</div>
+									<div class="wd100 ar" style="margin-top: 17px;">
+										<button type="submit" class="btn_gry03" id="emailReportButton" >Send</button> 
+									</div>
+									</div>
+								</form>		
+									<div class="bx_print_divider01" style="margin-top: 23px;"></div>
+									<div class="wd100 ar" style="margin-top: 22px;">
+										<button type="submit" class="btn_dgry_grd" id="printPdfReportButton" >Print</button> 
+									</div>
+									<div class="wd100 ar" style="margin-top: 11px;">
+										<button type="submit" class="btn_dgry_grd03" id="downloadPdfReportButton" filename ="" >Download</button> 
+										<form action="" name="download_created_report_pdf" id="download_created_report_pdf" method="post" >							
+									</div>
+									 <a href="" class="btn_dgry_grd" id="printHtmlFormatToPrinter" visibility="hidden" style="background-color:#fff" ></a>
+								</div>
+							</div>
+						</div>
+						<!--Box Print End-->
+					</div>
+				</div>
+			</div>
+			<!--  printer friendly report ends-->
+		<!--Content Right Inner End-->
+	</div>
+	<!-- end of overviewTabs -->
+</div>
+<!-- end of cont_rt class -->
+<!--Content Right End-->
+</body>
+</html>
