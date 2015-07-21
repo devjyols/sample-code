@@ -3,8 +3,8 @@ https://github.com/GarageGames/Torque2D/wiki/Cloning-the-repo-and-working-with-G
 ------------------------------------------------------------------------------
 
 sudo apt-get install git
-lidia@lidia-Studio-XPS-1640:~$ git config --global user.name "L****
-lidia@lidia-Studio-XPS-1640:~$ git config --global user.email "web************1@gmail.com"
+lidia@lidia-Studio-XPS-1640:~$ git config --global user.name "Lidia"
+lidia@lidia-Studio-XPS-1640:~$ git config --global user.email "webpageofficial1@gmail.com"
 -------------------------------------------------------------------------------
 lidia@lidia-Studio-XPS-1640:~$ git clone https://github.com/devjyols/sample-code.git /var/www/sample_code/
 Cloning into '/var/www/sample_code'...
@@ -51,7 +51,7 @@ nothing to commit (working directory clean)
 
 lidia@lidia-Studio-XPS-1640:/var/www/sample_code$ git push origin development
 Username for 'https://github.com': devjyols
-Password for 'https://devjyols@github.com': p*******01
+Password for 'https://devjyols@github.com': 
 To https://github.com/devjyols/sample-code.git
  * [new branch]      development -> development
 
