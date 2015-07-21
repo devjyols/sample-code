@@ -1,0 +1,41 @@
+Setting up git on ubuntu:
+https://github.com/GarageGames/Torque2D/wiki/Cloning-the-repo-and-working-with-Git
+------------------------------------------------------------------------------
+
+sudo apt-get install git
+lidia@lidia-Studio-XPS-1640:~$ git config --global user.name "Lidia"
+lidia@lidia-Studio-XPS-1640:~$ git config --global user.email "webpageofficial1@gmail.com"
+-------------------------------------------------------------------------------
+lidia@lidia-Studio-XPS-1640:~$ git clone https://github.com/devjyols/sample-code.git /var/www/sample_code/
+Cloning into '/var/www/sample_code'...
+remote: Counting objects: 40, done.
+remote: Total 40 (delta 0), reused 0 (delta 0), pack-reused 40
+Unpacking objects: 100% (40/40), done.
+
+-------------------------------------------------------------------------------
+lidia@lidia-Studio-XPS-1640:~$ ls -la /var/www/sample_code/
+total 64
+drwxr-xr-x  4 lidia lidia  4096 Jul 21 10:51 .
+drwxr-xr-x 19 lidia lidia  4096 Jul 21 10:51 ..
+drwxrwxr-x  2 lidia lidia  4096 Jul 21 10:51 assets
+-rw-rw-r--  1 lidia lidia   810 Jul 21 10:51 base_model.php
+-rw-rw-r--  1 lidia lidia  3475 Jul 21 10:51 broadcast.php
+-rw-rw-r--  1 lidia lidia  1765 Jul 21 10:51 business_logic
+-rw-rw-r--  1 lidia lidia 22619 Jul 21 10:51 codeigniter-views
+-rw-rw-r--  1 lidia lidia  1783 Jul 21 10:51 controller-codeigniter
+drwxrwxr-x  8 lidia lidia  4096 Jul 21 10:51 .git
+-rw-rw-r--  1 lidia lidia  2199 Jul 21 10:51 query samples
+-rw-rw-r--  1 lidia lidia   291 Jul 21 10:51 README.md
+
+--------------------------------------------------------------------------------
+
+lidia@lidia-Studio-XPS-1640:/var/www/sample_code$ git remote -v
+origin	https://github.com/devjyols/sample-code.git (fetch)
+origin	https://github.com/devjyols/sample-code.git (push)
+
+---------------------------------------------------------------------------------
+
+lidia@lidia-Studio-XPS-1640:/var/www/sample_code$ git branch
+
+
+
