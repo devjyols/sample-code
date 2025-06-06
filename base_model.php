@@ -7,6 +7,7 @@ class Base_Model extends CI_Model
 	protected $possibleJoinTypes;
 	function __construct()
 	{
+
 		
 		parent::__construct();
 		$this->readingDBInstance = $this->load->database('reportingdb', TRUE);
